@@ -408,6 +408,7 @@ namespace SensorLogInserterRe.ViewModels
 
         public async void Insert()
         {
+            System.Diagnostics.Stopwatch sw1 = new System.Diagnostics.Stopwatch();
             this.InsertConfig = this.GenerateInsertConfig();
 
             #region ファイル検索
@@ -482,9 +483,10 @@ namespace SensorLogInserterRe.ViewModels
                 #endregion
 
                 #region ECOLOG挿入
-
+                sw1.Start();
                 await Task.Run(() =>
                 {
+                   
                     if (IsCheckedSpeedLPFMapMatching)
                     {
                         EcologInserter.InsertEcologSpeedLPF005MM(datum, this.UpdateText, InsertConfig);
@@ -493,7 +495,8 @@ namespace SensorLogInserterRe.ViewModels
                         EcologInserter.InsertEcolog(datum, this.UpdateText, InsertConfig);
                     }
                 });
-
+                sw1.Stop();
+                LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw1.Elapsed);
                 #endregion
             }
             this.LogText += LogTexts.TheEndOfTheInsertingEcolog + "\n";

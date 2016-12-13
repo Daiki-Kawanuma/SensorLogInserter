@@ -16,7 +16,8 @@ namespace SensorLogInserterRe.Utils
             Acc,
             Trip,
             Ecolog,
-            Error
+            Error,
+            Elapsedtime
         }
 
         private static readonly string DirectoryName = "LogFiles";
@@ -81,6 +82,16 @@ namespace SensorLogInserterRe.Utils
                 case LogMode.Error:
 
                     fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HH")}_error.log";
+
+                    using (StreamWriter writer = new StreamWriter(fileName, true))
+                    {
+                        writer.WriteLine(DateTime.Now + " : " + text);
+                    }
+                    break;
+
+                case LogMode.Elapsedtime:
+
+                    fileName = $@"{DirectoryName}\{DateTime.Now.ToString("yyyy-MM-dd")}\{DateTime.Now.ToString("HH")}_elapsedtime.log";
 
                     using (StreamWriter writer = new StreamWriter(fileName, true))
                     {

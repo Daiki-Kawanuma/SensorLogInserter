@@ -47,6 +47,8 @@ namespace SensorLogInserterRe.Calculators
         public Tuple<string, double?> MatchLink(double latitude, double longitude, Single heading, string direction,
             InsertDatum datum)
         {
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
             // 探索コスト削減のため、Link ID と 道路勾配をいっぺんに返す
 
             string linkId = null;
@@ -131,7 +133,8 @@ namespace SensorLogInserterRe.Calculators
                     }
                 }
             }
-
+            sw.Stop();
+            LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "One Link Match Calculation Time:" + sw.Elapsed);
             return new Tuple<string, double?>(linkId, roadTheta);
         }
 
