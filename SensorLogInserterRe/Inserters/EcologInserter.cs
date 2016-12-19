@@ -48,5 +48,22 @@ namespace SensorLogInserterRe.Inserters
 
             TripsSpeedLPF005MMDao.UpdateConsumedEnergy();
         }
+        public static void InsertEcologMM(InsertDatum datum, MainWindowViewModel.UpdateTextDelegate updateTextDelegate, InsertConfig config)
+        {
+            var tripsTable = TripsMMDao.Get(datum);
+            int i = 1;
+            config.Correction = InsertConfig.GpsCorrection.MapMatching;
+            foreach (DataRow row in tripsTable.Rows)
+            {
+                updateTextDelegate($"Insetring ECOLOG ... , {i} / {tripsTable.Rows.Count}");
+                LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOG... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
+                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, config);
+                EcologMMDao.Insert(ecologTable);
+
+                i++;
+            }
+
+            TripsMMDao.UpdateConsumedEnergy();
+        }
     }
 }

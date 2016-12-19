@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using Livet;
 using Livet.Commands;
@@ -16,6 +16,7 @@ using SensorLogInserterRe.Handlers;
 using SensorLogInserterRe.Inserters;
 using SensorLogInserterRe.Models;
 using SensorLogInserterRe.Utils;
+using System.Threading.Tasks;
 
 namespace SensorLogInserterRe.ViewModels
 {
@@ -408,7 +409,8 @@ namespace SensorLogInserterRe.ViewModels
 
         public async void Insert()
         {
-            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+           
+            
             
             this.InsertConfig = this.GenerateInsertConfig();
 
@@ -460,6 +462,12 @@ namespace SensorLogInserterRe.ViewModels
 
             #endregion
 
+                InsertConfig normal = this.GenerateInsertConfig();
+                normal.Correction = 0;
+                InsertConfig MM = this.GenerateInsertConfig();
+                MM.Correction = InsertConfig.GpsCorrection.MapMatching;
+            
+
             foreach (var datum in InsertDatumList)
             {
                 #region トリップ挿入
@@ -467,6 +475,11 @@ namespace SensorLogInserterRe.ViewModels
                 await Task.Run(() =>
                 {
                     TripInserter.InsertTrip(datum, InsertConfig);
+                    if(InsertConfig.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+                    {
+                        TripInserter.InsertTrip(datum, normal);
+                        TripInserter.InsertTrip(datum, MM);
+                    }
                 });
 
                 #endregion
@@ -484,16 +497,18 @@ namespace SensorLogInserterRe.ViewModels
                 #endregion
 
                 #region ECOLOG挿入
+                System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
                 sw.Start();
                 await Task.Run(() =>
                 {
                     if (IsCheckedSpeedLPFMapMatching)
                     {
-                        EcologInserter.InsertEcologSpeedLPF005MM(datum, this.UpdateText, InsertConfig);
+                        EcologInserter.InsertEcologSpeedLPF005MM(datum, this.UpdateText, normal);
+                        EcologInserter.InsertEcologMM(datum, this.UpdateText, MM);
                     }
-                    else {
+                    
                         EcologInserter.InsertEcolog(datum, this.UpdateText, InsertConfig);
-                    }
+                    
                 });
                 sw.Stop();
                 LogWritter.WriteLog(LogWritter.LogMode.Elapsedtime, "Total Time:" + sw.Elapsed);

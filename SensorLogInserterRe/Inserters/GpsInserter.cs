@@ -47,19 +47,21 @@ namespace SensorLogInserterRe.Inserters
                 InsertDatum.AddDatumToList(insertDatumList, datum);
 
                 LogWritter.WriteLog(LogWritter.LogMode.Gps, $"インサートデータ, FilePath: {filePath}, DriverId: {datum.DriverId}, CarId: {datum.CarId}, SensorId: {datum.SensorId}");
-
+                var gpsMMTable = new DataTable();
                 // ファイルごとの処理なので主キー違反があっても挿入されないだけ
                 var gpsRawTable = InsertGpsRaw(filePath, datum);
                 if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
                 {
-                    gpsRawTable = MapMatching.getResultMapMatching(gpsRawTable, datum);
+                    gpsMMTable = MapMatching.getResultMapMatching(gpsRawTable, datum);
                 }
-                if (gpsRawTable.Rows.Count != 0)
+                if (gpsMMTable.Rows.Count != 0)
                 {
 
+                    InsertCorrectedGps(gpsMMTable, config);
+                    TripInserter.InsertTripRaw(gpsMMTable, config);
+                    config.Correction = 0;
                     InsertCorrectedGps(gpsRawTable, config);
                     TripInserter.InsertTripRaw(gpsRawTable, config);
-                    
                 }
                 else
                 {
@@ -157,7 +159,7 @@ namespace SensorLogInserterRe.Inserters
             // ファイルごとの挿入なので主キー違反があっても挿入されないだけ
             if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)//速度にローパスフィルタを適用
             {
-                
+                CorrectedGpsMMDao.Insert(correctedGpsTable);
                 DataTable correctedGpsSpeedLPFTable = LowPassFilter.speedLowPassFilter(correctedGpsTable, 0.05);
                 CorrectedGpsSpeedLPF005MMDao.Insert(correctedGpsSpeedLPFTable);
             }

@@ -38,6 +38,7 @@ namespace SensorLogInserterRe.Inserters
             // GPSファイルごとの処理なので主キー違反があっても挿入されないだけ
             if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
             {
+                TripsRawMMDao.Insert(tripsTable);
                 TripsRawSpeedLPF005MMDao.Insert(tripsTable);
             }
             else {
@@ -52,6 +53,10 @@ namespace SensorLogInserterRe.Inserters
             if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
             {
                 tripsRawTable = TripsRawSpeedLPF005MMDao.Get(datum);
+            }
+            else if(config.Correction == InsertConfig.GpsCorrection.MapMatching)
+            {
+                tripsRawTable = TripsRawMMDao.Get(datum);
             }
             else
             {
@@ -84,6 +89,10 @@ namespace SensorLogInserterRe.Inserters
                 if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
                 {
                     TripsSpeedLPF005MMDao.Insert(tripsTable);
+                }
+                else if (config.Correction  == InsertConfig.GpsCorrection.MapMatching)
+                {
+                    TripsRawMMDao.Insert(tripsTable);
                 }
                 else {
                     TripsDao.Insert(tripsTable);

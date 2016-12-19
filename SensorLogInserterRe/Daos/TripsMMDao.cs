@@ -1,16 +1,16 @@
-﻿using System;
+﻿using SensorLogInserterRe.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SensorLogInserterRe.Models;
 
 namespace SensorLogInserterRe.Daos
 {
-    class TripsDao
+    class TripsMMDao
     {
-        private static readonly string TableName = "trips_links_lookup";
+        private static readonly string TableName = "trips_links_mm_lookup";
         public static readonly string ColumnTripId = "trip_id";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
@@ -42,12 +42,12 @@ namespace SensorLogInserterRe.Daos
             var query = new StringBuilder();
 
             query.AppendLine("SELECT *");
-            query.AppendLine($"FROM {TripsDao.TableName}");
-            query.AppendLine($"WHERE {TripsDao.ColumnDriverId} = {datum.DriverId}");
-            query.AppendLine($"AND {TripsDao.ColumnCarId} = {datum.CarId}");
-            query.AppendLine($"AND {TripsDao.ColumnSensorId} = {datum.SensorId}");
-            query.AppendLine($"AND {TripsDao.ColumnStartTime} >= '{datum.StartTime}'");
-            query.AppendLine($"AND {TripsDao.ColumnEndTime} <= '{datum.EndTime}'");
+            query.AppendLine($"FROM {TripsMMDao.TableName}");
+            query.AppendLine($"WHERE {TripsMMDao.ColumnDriverId} = {datum.DriverId}");
+            query.AppendLine($"AND {TripsMMDao.ColumnCarId} = {datum.CarId}");
+            query.AppendLine($"AND {TripsMMDao.ColumnSensorId} = {datum.SensorId}");
+            query.AppendLine($"AND {TripsMMDao.ColumnStartTime} >= '{datum.StartTime}'");
+            query.AppendLine($"AND {TripsMMDao.ColumnEndTime} <= '{datum.EndTime}'");
             query.AppendLine($"ORDER BY {ColumnStartTime}");
 
             return DatabaseAccesser.GetResult(query.ToString());

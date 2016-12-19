@@ -19,7 +19,7 @@ namespace SensorLogInserterRe.Calculators
             if (_instance == null)
                 _instance = new AltitudeCalculator
                 {
-                    _registeredTable = Altitude10MMeshRegisteredDao.Get()
+                 //   _registeredTable = Altitude10MMeshRegisteredDao.Get()
                 };
 
             return _instance;
@@ -35,12 +35,13 @@ namespace SensorLogInserterRe.Calculators
             int meshId;
             float altitude;
 
-            var selectedRows = _registeredTable.AsEnumerable()
-                .Where(row => row.Field<double>("lower_latitude") <= latitude
-                    && row.Field<double>("upper_latitude") > latitude
-                    && row.Field<double>("lower_longitude") <= longitude
-                    && row.Field<double>("upper_longitude") > longitude)
-                .ToArray();
+            var selectedRows = Altitude10MMeshRegisteredDao.GetAltitude(latitude, longitude).Select(null);
+                //_registeredTable.AsEnumerable()
+                //.Where(row => row.Field<double>("lower_latitude") <= latitude
+                //    && row.Field<double>("upper_latitude") > latitude
+                //    && row.Field<double>("lower_longitude") <= longitude
+                //    && row.Field<double>("upper_longitude") > longitude)
+                //.ToArray();
 
             //メッシュ登録済み
             if (selectedRows.Length > 0)
@@ -68,16 +69,16 @@ namespace SensorLogInserterRe.Calculators
                     //標高データ修正テーブル
                     Altitude10MMeshRegisteredDao.Insert(meshId, altitudeDatum);
 
-                    //データテーブルに新しい標高データを登録
-                    DataRow newrow = _registeredTable.NewRow();
-                    newrow.SetField(Altitude10MMeshRegisteredDao.ColumnMeshId, meshId);
-                    newrow.SetField(Altitude10MMeshRegisteredDao.ColumnLowerLatitude, altitudeDatum.LowerLatitude);
-                    newrow.SetField(Altitude10MMeshRegisteredDao.ColumnLowerLongitude, altitudeDatum.LowerLongitude);
-                    newrow.SetField(Altitude10MMeshRegisteredDao.ColumnUpperLatitude, altitudeDatum.UpperLatitude);
-                    newrow.SetField(Altitude10MMeshRegisteredDao.ColumnUpperLongitude, altitudeDatum.UpperLongitude);
-                    newrow.SetField(Altitude10MMeshRegisteredDao.ColumnAltitude, altitudeDatum.Altitude);
+                    ////データテーブルに新しい標高データを登録
+                    //DataRow newrow = _registeredTable.NewRow();
+                    //newrow.SetField(Altitude10MMeshRegisteredDao.ColumnMeshId, meshId);
+                    //newrow.SetField(Altitude10MMeshRegisteredDao.ColumnLowerLatitude, altitudeDatum.LowerLatitude);
+                    //newrow.SetField(Altitude10MMeshRegisteredDao.ColumnLowerLongitude, altitudeDatum.LowerLongitude);
+                    //newrow.SetField(Altitude10MMeshRegisteredDao.ColumnUpperLatitude, altitudeDatum.UpperLatitude);
+                    //newrow.SetField(Altitude10MMeshRegisteredDao.ColumnUpperLongitude, altitudeDatum.UpperLongitude);
+                    //newrow.SetField(Altitude10MMeshRegisteredDao.ColumnAltitude, altitudeDatum.Altitude);
 
-                    _registeredTable.Rows.Add(newrow);
+                    //_registeredTable.Rows.Add(newrow);
                 }
             }
 
