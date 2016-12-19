@@ -79,7 +79,7 @@ namespace SensorLogInserterRe.Daos
         {
             var selectQuery = new StringBuilder();
             selectQuery.AppendLine("SELECT trip.trip_id, SUM(consumed_electric_energy) AS consumed_energy");
-            selectQuery.AppendLine("FROM [trips_speedlpf0.05_mm] AS trip, [ecolog_speedlpf0.05_mm] AS ecolog");
+            selectQuery.AppendLine("FROM [trips_speedlpf0.05_mm_links_lookup] AS trip, [ecolog_speedlpf0.05_mm_links_lookup] AS ecolog");
             selectQuery.AppendLine("WHERE consumed_energy IS NULL");
             selectQuery.AppendLine("  AND trip.trip_id = ecolog.trip_id");
             selectQuery.AppendLine("GROUP BY trip.trip_id");
@@ -89,7 +89,7 @@ namespace SensorLogInserterRe.Daos
             foreach (DataRow row in resultTable.Rows)
             {
                 var updateQuery = new StringBuilder();
-                updateQuery.AppendLine($"UPDATE [trips_speedlpf0.05_mm]");
+                updateQuery.AppendLine($"UPDATE [trips_speedlpf0.05_mm_links_lookup]");
                 updateQuery.AppendLine($"SET consumed_energy = '{row.Field<double>(1)}'");
                 updateQuery.AppendLine($"WHERE trip_id = {row.Field<int>(0)}");
 

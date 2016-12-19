@@ -86,13 +86,13 @@ namespace SensorLogInserterRe.Inserters
                 }
 
                 // 1トリップごとなので主キー違反があっても挿入されないだけ
-                if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+                if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching && !mapMatching && !normal)
                 {
                     TripsSpeedLPF005MMDao.Insert(tripsTable);
                 }
-                else if (config.Correction  == InsertConfig.GpsCorrection.MapMatching)
+                else if (mapMatching)
                 {
-                    TripsRawMMDao.Insert(tripsTable);
+                    TripsMMDao.Insert(tripsTable);
                 }
                 else {
                     TripsDao.Insert(tripsTable);

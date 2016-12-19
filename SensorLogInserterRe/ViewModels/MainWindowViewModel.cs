@@ -499,8 +499,8 @@ namespace SensorLogInserterRe.ViewModels
                 {
                     if (IsCheckedSpeedLPFMapMatching)
                     {
-                        EcologInserter.InsertEcologSpeedLPF005MM(datum, this.UpdateText, normal);
-                        EcologInserter.InsertEcologMM(datum, this.UpdateText, MM);
+                        EcologInserter.InsertEcologSpeedLPF005MM(datum, this.UpdateText, InsertConfig);
+                        EcologInserter.InsertEcologMM(datum, this.UpdateText, InsertConfig);
                     }
                     
                         EcologInserter.InsertEcolog(datum, this.UpdateText, InsertConfig);

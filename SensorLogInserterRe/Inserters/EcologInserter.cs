@@ -23,7 +23,7 @@ namespace SensorLogInserterRe.Inserters
             {
                 updateTextDelegate($"Insetring ECOLOG ... , {i} / {tripsTable.Rows.Count}");
                 LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOG... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
-                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, config, false);
+                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, config, false, true);
                 EcologDao.Insert(ecologTable);
 
                 i++;
@@ -38,9 +38,9 @@ namespace SensorLogInserterRe.Inserters
 
             foreach (DataRow row in tripsTable.Rows)
             {
-                updateTextDelegate($"Insetring ECOLOG ... , {i} / {tripsTable.Rows.Count}");
-                LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOG... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
-                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, config, false);
+                updateTextDelegate($"Insetring ECOLOG SpeedLPF005 MM... , {i} / {tripsTable.Rows.Count}");
+                LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOG SpeedLPF005 MM... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
+                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, config, false, false);
                 EcologSpeedLPF005MMDao.Insert(ecologTable);
 
                 i++;
@@ -55,9 +55,9 @@ namespace SensorLogInserterRe.Inserters
            
             foreach (DataRow row in tripsTable.Rows)
             {
-                updateTextDelegate($"Insetring ECOLOG ... , {i} / {tripsTable.Rows.Count}");
-                LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOG... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
-                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, config, true);
+                updateTextDelegate($"Insetring ECOLOG MM... , {i} / {tripsTable.Rows.Count}");
+                LogWritter.WriteLog(LogWritter.LogMode.Ecolog, $"Insetring ECOLOG MM... , { i} / { tripsTable.Rows.Count}, Datum: {datum}");
+                var ecologTable = HagimotoEcologCalculator.CalcEcolog(row, datum, config, true, false);
                 EcologMMDao.Insert(ecologTable);
 
                 i++;
