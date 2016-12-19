@@ -462,10 +462,6 @@ namespace SensorLogInserterRe.ViewModels
 
             #endregion
 
-                InsertConfig normal = this.GenerateInsertConfig();
-                normal.Correction = 0;
-                InsertConfig MM = this.GenerateInsertConfig();
-                MM.Correction = InsertConfig.GpsCorrection.MapMatching;
             
 
             foreach (var datum in InsertDatumList)
@@ -474,11 +470,11 @@ namespace SensorLogInserterRe.ViewModels
 
                 await Task.Run(() =>
                 {
-                    TripInserter.InsertTrip(datum, InsertConfig);
+                    TripInserter.InsertTrip(datum, InsertConfig, false, false);
                     if(InsertConfig.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
                     {
-                        TripInserter.InsertTrip(datum, normal);
-                        TripInserter.InsertTrip(datum, MM);
+                        TripInserter.InsertTrip(datum, InsertConfig, true, false);
+                        TripInserter.InsertTrip(datum, InsertConfig, false, true);
                     }
                 });
 
