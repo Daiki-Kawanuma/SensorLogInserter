@@ -46,15 +46,15 @@ namespace SensorLogInserterRe.Inserters
             }
         }
 
-        public static void InsertTrip(InsertDatum datum, InsertConfig config)
+        public static void InsertTrip(InsertDatum datum, InsertConfig config, bool mapMatching, bool normal)
         {
             LogWritter.WriteLog(LogWritter.LogMode.Trip, $"TRIP挿入開始, DRIVER_ID: {datum.DriverId}, CAR_ID: {datum.CarId}, SENSOR_ID: {datum.SensorId}");
             var tripsRawTable = new DataTable();
-            if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+            if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching && !mapMatching && !normal)
             {
                 tripsRawTable = TripsRawSpeedLPF005MMDao.Get(datum);
             }
-            else if(config.Correction == InsertConfig.GpsCorrection.MapMatching)
+            else if(mapMatching)
             {
                 tripsRawTable = TripsRawMMDao.Get(datum);
             }
