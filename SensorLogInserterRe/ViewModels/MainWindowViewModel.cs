@@ -470,11 +470,12 @@ namespace SensorLogInserterRe.ViewModels
 
                 await Task.Run(() =>
                 {
-                    TripInserter.InsertTrip(datum, InsertConfig, false, false);
-                    if(InsertConfig.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
+                    TripInserter.InsertTrip(datum, InsertConfig, false, true);
+                    if (InsertConfig.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching)
                     {
+                        TripInserter.InsertTrip(datum, InsertConfig, false, false);
                         TripInserter.InsertTrip(datum, InsertConfig, true, false);
-                        TripInserter.InsertTrip(datum, InsertConfig, false, true);
+                        
                     }
                 });
 
