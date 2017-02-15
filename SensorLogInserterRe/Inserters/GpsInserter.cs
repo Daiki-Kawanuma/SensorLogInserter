@@ -51,14 +51,14 @@ namespace SensorLogInserterRe.Inserters
                 // ファイルごとの処理なので主キー違反があっても挿入されないだけ
                 var gpsRawTable = InsertGpsRaw(filePath, datum);
                 if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching || config.Correction == InsertConfig.GpsCorrection.MapMatching
-                    || config.Correction == InsertConfig.GpsCorrection.LPFEx)
+                    || config.Correction == InsertConfig.GpsCorrection.LpfEx)
                 {
                     gpsRawTable = MapMatching.getResultMapMatching(gpsRawTable, datum);
                 }
                 if (gpsRawTable.Rows.Count != 0)
                 {
 
-                    InsertCorrectedGps(gpsRawTable, config);
+                    InsertCorrectedGps(gpsRawTable, config, datum);
                     TripInserter.InsertTripRaw(gpsRawTable, config);
                     
                 }
@@ -89,7 +89,7 @@ namespace SensorLogInserterRe.Inserters
             correctedRow.SetField(CorrectedGpsDao.ColumnLongitude, rawRow.Field<double>(AndroidGpsRawDao.ColumnLongitude));
         }
 
-        private static void InsertCorrectedGps(DataTable gpsRawTable, InsertConfig config)
+        private static void InsertCorrectedGps(DataTable gpsRawTable, InsertConfig config, InsertDatum datum)
         {
             DataTable correctedGpsTable = DataTableUtil.GetCorrectedGpsTable();
 
@@ -162,9 +162,10 @@ namespace SensorLogInserterRe.Inserters
                 DataTable correctedGpsSpeedLPFTable = LowPassFilter.speedLowPassFilter(correctedGpsTable, 0.05);
                 CorrectedGpsSpeedLPF005MMDao.Insert(correctedGpsSpeedLPFTable);
             }
-            else if (config.Correction == InsertConfig.GpsCorrection.LPFEx)
+            else if (config.Correction == InsertConfig.GpsCorrection.LpfEx)
             {
-                DataTable correctedGpsLpfExTable; //TO DO   
+                DataTable correctedGpsLpfExTable = CorrectedGpsLpfExDao.Get(gpsRawTable.Rows[0].Field<DateTime>(AndroidGpsRawDao.ColumnJst),
+                    gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst), datum); //TO DO   
                 CorrectedGpsLpfExDao.Insert(correctedGpsLpfExTable);
             }
             else if (config.Correction == InsertConfig.GpsCorrection.MapMatching)

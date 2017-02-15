@@ -109,6 +109,14 @@ namespace SensorLogInserterRe.Inserters
             {
                 tripsTable = TripsSpeedLPF005MMDao.Get(datum);
             }
+            else if(config.Correction == InsertConfig.GpsCorrection.LpfEx)
+            {
+                tripsTable = TripsLpfExDao.Get(datum);
+            }
+            else if(config.Correction == InsertConfig.GpsCorrection.MapMatching)
+            {
+                tripsTable = TripsMMDao.Get(datum);
+            }
             else
             {
                 tripsTable = TripsDao.Get(datum);

@@ -598,7 +598,7 @@ namespace SensorLogInserterRe.ViewModels
             else if (this.IsCheckedSpeedLPFMapMatching)
                 insertConfig.Correction = InsertConfig.GpsCorrection.SpeedLPFMapMatching;
             else if (this.IsCheckedLPFEx)
-                insertConfig.Correction = InsertConfig.GpsCorrection.LPFEx;
+                insertConfig.Correction = InsertConfig.GpsCorrection.LpfEx;
 
             #endregion
 

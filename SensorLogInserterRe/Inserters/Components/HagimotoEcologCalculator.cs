@@ -30,6 +30,11 @@ namespace SensorLogInserterRe.Inserters.Components
                 correctedGpsTable = CorrectedGPSMMDao.GetNormalized(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
                 tripRow.Field<DateTime>(TripsDao.ColumnEndTime), datum);
             }
+            else if(config.Correction == InsertConfig.GpsCorrection.LpfEx)
+            {
+                correctedGpsTable = CorrectedGpsLpfExDao.GetNormalized(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
+                tripRow.Field<DateTime>(TripsDao.ColumnEndTime), datum);
+            }
             else
             {
                 correctedGpsTable = CorrectedGpsDao.GetNormalized(tripRow.Field<DateTime>(TripsDao.ColumnStartTime),
