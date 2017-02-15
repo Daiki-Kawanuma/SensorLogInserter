@@ -131,6 +131,7 @@
     <Compile Include="Daos\EcologSpeedLPF005MMDao.cs" />
     <Compile Include="Daos\LinkDetailDao.cs" />
     <Compile Include="Daos\LinksForSearchDao.cs" />
+    <Compile Include="Daos\TripsLpfExDao.cs" />
     <Compile Include="Daos\TripsMMDao.cs" />
     <Compile Include="Daos\TripsRawLpfExDao.cs" />
     <Compile Include="Daos\TripsRawMMDao.cs" />
