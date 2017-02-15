@@ -426,6 +426,7 @@ namespace SensorLogInserterRe.ViewModels
             this.IsCheckedDeadReckoning = false;
             this.IsCheckedSpeedLPFMapMatching = false;
             this.IsCheckedLPFEx = false;
+            this.IsCheckedNormal = true;
         }
 
         private void InitInsertionTarget()

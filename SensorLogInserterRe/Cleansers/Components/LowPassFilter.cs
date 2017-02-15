@@ -88,70 +88,7 @@ namespace SensorLogInserterRe.Cleansers.Components
             #endregion
             return correctedGpsSpeedLPFTable;
         }
-        public static DataTable speedLPFDifferentCutoff(DataTable correctedGpsTable)
-        {
-            DataTable correctedGpsSpeedLPFTable = DataTableUtil.GetCorrectedGpsTable();
-
-            #region ローパスフィルタ適用
-            double[] speed = convertDataRowToDoubleRow(correctedGpsTable);
-
-            Boolean[] speedbool = new Boolean[speed.Length];
-            for (int i = 0; i < speedbool.Length; i++)
-            {
-                if (speed[i] == 0)//スピードがゼロのインデックスを記録
-                {
-                    speedbool[i] = true;
-                }
-                else
-                {
-                    speedbool[i] = false;
-                }
-            }
-            Complex[] data = LowPassFilter.fourier(speed);
-            double[] frequencyScale = LowPassFilter.getFrequencyScale(speed, 1);
-            Complex[] filteredData = LowPassFilter.applyLowPassFilter(data, frequencyScale, cutOffFrequency);//ローパスフィルタ＆逆フーリエ変換
-
-            for (int i = 0; i < speedbool.Length; i++)
-            {
-                if (speedbool[i])
-                {
-                    filteredData[i] = new Complex(0, filteredData[i].Imaginary);//もともと車速がゼロのデータを逆フーリエ変換後もゼロに
-                }
-            }
-
-            #endregion
-
-            #region インデックスが 0 の場合
-            DataRow firstRow = correctedGpsSpeedLPFTable.NewRow();
-            CopyRawDataToCorrectedRow(firstRow, correctedGpsTable.Rows[0]);
-            firstRow.SetField(CorrectedGpsDao.ColumnSpeed, filteredData[0].Real);
-
-            correctedGpsSpeedLPFTable.Rows.Add(firstRow);
-            #endregion
-
-
-            for (int i = 1; i < correctedGpsTable.Rows.Count - 1; i++)
-            {
-                DataRow row = correctedGpsSpeedLPFTable.NewRow();
-
-                CopyRawDataToCorrectedRow(row, correctedGpsTable.Rows[i]);
-
-                row.SetField(CorrectedGpsSpeedLPF005MMDao.ColumnSpeed, filteredData[i].Real);
-
-
-                correctedGpsSpeedLPFTable.Rows.Add(row);
-            }
-
-            #region インデックスが最後の場合
-            DataRow lastRow = correctedGpsSpeedLPFTable.NewRow();
-            CopyRawDataToCorrectedRow(lastRow, correctedGpsTable.Rows[correctedGpsTable.Rows.Count - 1]);
-            lastRow.SetField(CorrectedGpsDao.ColumnSpeed, filteredData[correctedGpsTable.Rows.Count - 1].Real);
-
-            correctedGpsSpeedLPFTable.Rows.Add(lastRow);
-
-            #endregion
-            return correctedGpsSpeedLPFTable;
-        }
+ 
         private static Complex[] fourier(double[] data)
         {
             Complex[] complexData = new Complex[data.Length];
