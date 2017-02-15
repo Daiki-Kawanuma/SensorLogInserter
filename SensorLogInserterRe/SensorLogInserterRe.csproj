@@ -124,6 +124,7 @@
     <Compile Include="Cleansers\Components\MapMatching.cs" />
     <Compile Include="Daos\Altitude10MMeshDao.cs" />
     <Compile Include="Daos\Altitude10MMeshRegisteredDao.cs" />
+    <Compile Include="Daos\CorrectedGpsLpfExDao.cs" />
     <Compile Include="Daos\CorrectedGPSMMDao.cs" />
     <Compile Include="Daos\CorrectedGpsSpeedLPF005MMDao.cs" />
     <Compile Include="Daos\EcologMMDao.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Daos\LinkDetailDao.cs" />
     <Compile Include="Daos\LinksForSearchDao.cs" />
     <Compile Include="Daos\TripsMMDao.cs" />
+    <Compile Include="Daos\TripsRawLpfExDao.cs" />
     <Compile Include="Daos\TripsRawMMDao.cs" />
     <Compile Include="Daos\TripsRawSpeedLPF005MMDao.cs" />
     <Compile Include="Daos\TripsSpeedLPF005MMDao.cs" />
