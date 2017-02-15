@@ -24,7 +24,8 @@ namespace SensorLogInserterRe.Models
             Normal,
             MapMatching,
             DeadReckoning,
-            SpeedLPFMapMatching
+            SpeedLPFMapMatching,
+            
         }
 
         public List<string> CheckeDrivers { get; set; }

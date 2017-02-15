@@ -328,6 +328,44 @@ namespace SensorLogInserterRe.ViewModels
         }
         #endregion
 
+
+        #region IsCheckedLPFEx変更通知プロパティ
+        private bool _IsCheckedLPFEx;
+
+        public bool IsCheckedLPFEx
+        {
+            get
+            { return _IsCheckedLPFEx; }
+            set
+            { 
+                if (_IsCheckedLPFEx == value)
+                    return;
+                _IsCheckedLPFEx = value;
+                RaisePropertyChanged("IsCheckedLPFEx");
+            }
+        }
+        #endregion
+
+
+        #region IsCheckedNormal変更通知プロパティ
+        private bool _IsCheckedNormal;
+
+        public bool IsCheckedNormal
+        {
+            get
+            { return _IsCheckedNormal; }
+            set
+            { 
+                if (_IsCheckedNormal == value)
+                    return;
+                _IsCheckedNormal = value;
+                RaisePropertyChanged("IsCheckedNormal");
+            }
+        }
+        #endregion
+
+
+
         private InsertConfig InsertConfig { get; set; }
 
         private List<string> InsertFileList { get; set; }
@@ -387,6 +425,7 @@ namespace SensorLogInserterRe.ViewModels
             this.IsCheckedMapMatching = false;
             this.IsCheckedDeadReckoning = false;
             this.IsCheckedSpeedLPFMapMatching = false;
+            this.IsCheckedLPFEx = false;
         }
 
         private void InitInsertionTarget()
@@ -495,6 +534,10 @@ namespace SensorLogInserterRe.ViewModels
                     {
                         EcologInserter.InsertEcologMM(datum, this.UpdateText, InsertConfig);
                     }
+                    else if (IsCheckedLPFEx)
+                    {
+                        //EcologInserter
+                    }
 
                     else{
                         EcologInserter.InsertEcolog(datum, this.UpdateText, InsertConfig);
@@ -554,6 +597,8 @@ namespace SensorLogInserterRe.ViewModels
                 insertConfig.Correction = InsertConfig.GpsCorrection.DeadReckoning;
             else if (this.IsCheckedSpeedLPFMapMatching)
                 insertConfig.Correction = InsertConfig.GpsCorrection.SpeedLPFMapMatching;
+            else if (this.IsCheckedLPFEx)
+                insertConfig.Correction = InsertConfig.GpsCorrection.LPFEx;
 
             #endregion
 
