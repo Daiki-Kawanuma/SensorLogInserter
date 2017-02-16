@@ -51,9 +51,14 @@ namespace SensorLogInserterRe.Inserters
                 // ファイルごとの処理なので主キー違反があっても挿入されないだけ
                 var gpsRawTable = InsertGpsRaw(filePath, datum);
                 if (config.Correction == InsertConfig.GpsCorrection.SpeedLPFMapMatching || config.Correction == InsertConfig.GpsCorrection.MapMatching
-                    || config.Correction == InsertConfig.GpsCorrection.LpfEx)
+                    )
                 {
                     gpsRawTable = MapMatching.getResultMapMatching(gpsRawTable, datum);
+                }
+                else if(config.Correction == InsertConfig.GpsCorrection.LpfEx && gpsRawTable.Rows.Count != 0)
+                {
+                    gpsRawTable = CorrectedGpsLpfExDao.Get(gpsRawTable.Rows[0].Field<DateTime>(AndroidGpsRawDao.ColumnJst),
+                    gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst), datum);
                 }
                 if (gpsRawTable.Rows.Count != 0)
                 {
@@ -164,9 +169,9 @@ namespace SensorLogInserterRe.Inserters
             }
             else if (config.Correction == InsertConfig.GpsCorrection.LpfEx)
             {
-                DataTable correctedGpsLpfExTable = CorrectedGpsLpfExDao.Get(gpsRawTable.Rows[0].Field<DateTime>(AndroidGpsRawDao.ColumnJst),
-                    gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst), datum); //TO DO   
-                CorrectedGpsLpfExDao.Insert(correctedGpsLpfExTable);
+                //DataTable correctedGpsLpfExTable = CorrectedGpsLpfExDao.Get(gpsRawTable.Rows[0].Field<DateTime>(AndroidGpsRawDao.ColumnJst),
+                //    gpsRawTable.Rows[gpsRawTable.Rows.Count - 1].Field<DateTime>(AndroidGpsRawDao.ColumnJst), datum); //TO DO   
+                //CorrectedGpsLpfExDao.Insert(correctedGpsLpfExTable);
             }
             else if (config.Correction == InsertConfig.GpsCorrection.MapMatching)
             {

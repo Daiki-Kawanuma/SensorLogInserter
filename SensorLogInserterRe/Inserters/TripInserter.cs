@@ -107,7 +107,7 @@ namespace SensorLogInserterRe.Inserters
                 }
                 else if(config.Correction == InsertConfig.GpsCorrection.LpfEx)
                 {
-                    TripsRawLpfExDao.Insert(tripsTable);
+                    TripsLpfExDao.Insert(tripsTable);
                 }
                 else {
                     TripsDao.Insert(tripsTable);
