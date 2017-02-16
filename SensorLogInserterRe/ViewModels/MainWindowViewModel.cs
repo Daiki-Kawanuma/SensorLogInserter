@@ -537,7 +537,7 @@ namespace SensorLogInserterRe.ViewModels
                     }
                     else if (IsCheckedLPFEx)
                     {
-                        //EcologInserter
+                        EcologInserter.InsertEcologLpfEx(datum, this.UpdateText, InsertConfig);
                     }
 
                     else{
