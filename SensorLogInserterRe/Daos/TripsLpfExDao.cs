@@ -11,7 +11,7 @@ namespace SensorLogInserterRe.Daos
     class TripsLpfExDao
     {
         private static readonly string TableName = "TRIPS_LPF_EX_LINKS_LOOKUP";
-        private static readonly string EcologTableName = "ecolog_mm_links_lookup";
+        private static readonly string EcologTableName = "ECOLOG_LPF_EX_LINKS_LOOKUP";
         public static readonly string ColumnTripId = "trip_id";
         public static readonly string ColumnDriverId = "driver_id";
         public static readonly string ColumnCarId = "car_id";
